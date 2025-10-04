@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+	<persistence-unit name="LS">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<class>br.com.lopessolutions.entidades.principal.Formulario</class>
+		<class>br.com.lopessolutions.entidades.principal.Log</class>
+		<class>br.com.lopessolutions.entidades.principal.Parametro</class>
+		<class>br.com.lopessolutions.entidades.principal.Permissao</class>
+		<class>br.com.lopessolutions.entidades.principal.TipoAcesso</class>
+		<class>br.com.lopessolutions.entidades.principal.TipoPermissao</class>
+		<class>br.com.lopessolutions.entidades.principal.Usuario</class>
+
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		
+		<properties>
+			
+            <property name="jakarta.persistence.jdbc.driver"
+				value="org.postgresql.Driver" />
+			<property name="jakarta.persistence.jdbc.url"
+				value="jdbc:postgresql://localhost:5432/ls" /> <property name="jakarta.persistence.jdbc.user"
+				value="postgres" /> <property name="jakarta.persistence.jdbc.password"
+				value="08072014" /> <property
+				name="jakarta.persistence.validation.group.pre-persist"
+				value="jakarta.validation.groups.MyPersistValidation" />
+			<property
+				name="jakarta.persistence.validation.group.pre-update"
+				value="jakarta.validation.groups.MyUpdateValidation" />
+			<property
+				name="jakarta.persistence.validation.group.pre-remove"
+				value="jakarta.validation.groups.MyRemovetValidation" />
+
+
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.transaction.jta.platform"
+				value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
+			<property name="hibernate.query.in_clause_parameter_padding"
+				value="true" />
+			<property name="hibernate.show_sql" value="true" /> <property name="hibernate.format_sql" value="true" /> </properties>
+	</persistence-unit>
+</persistence>

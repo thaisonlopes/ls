@@ -1,0 +1,10 @@
+@use 'sass:color';
+
+$primaryColor:#2196F3;
+$primaryLightestColor: #E3F2FD;
+$primaryDarkColor: $primaryColor;
+$primaryTextColor:#ffffff;
+$accentColor:#f37f21;
+$accentTextColor:#212121;
+
+@import '../layout/styles/theme/theme-light/_theme';
