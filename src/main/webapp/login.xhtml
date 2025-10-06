@@ -27,9 +27,7 @@
                     <p:graphicImage name="images/logo2x.png" library="layout" />
                 </div>
             </div>
-            <div class="topbar-right mr-3 flex">
-                <p:button value="DASHBOARD" outcome="/favorites/dashboard" styleClass="ui-button-flat ui-button-plain topbar-button" />
-            </div>
+            <div class="topbar-right mr-3 flex"></div>
         </div>
     
         <div class="align-self-center mt-auto mb-auto">
@@ -64,7 +62,9 @@
                     </div>
                 </div>
     
-                <p:button value="LOGIN" styleClass="login-button mb-6 px-3" outcome="/favorites/dashboard" />
+                <h:form>
+                    <p:commandButton value="LOGIN" actionListener="#{loginBean.doLogin}" update="@none" styleClass="login-button mb-6 px-3" />
+                </h:form>
             </div>
         </div>
 

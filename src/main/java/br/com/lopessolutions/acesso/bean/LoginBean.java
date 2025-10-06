@@ -23,6 +23,7 @@ public class LoginBean extends MessageBean {
 
 	@Inject
 	private UsuarioDAO usuarioDAO;
+
 	private String cpf = "";
 	private String senha = "";
 
@@ -74,6 +75,8 @@ public class LoginBean extends MessageBean {
 			if (session != null) {
 				session.removeAttribute("UsuarioLogado");
 			}
+
+            // Seed inicial é feito pelo StartupSeeder no boot do servidor
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +136,7 @@ public class LoginBean extends MessageBean {
 						request.getSession().setAttribute("UsuarioLogado", log);
 						request.getSession().setAttribute("UsuarioSessao", log.getUsuario());
 
-						response.sendRedirect("favorites/dashboard.xhtml?faces-redirect=true");
+						response.sendRedirect("ls/dashboard.xhtml?faces-redirect=true");
 
 					} else {
 						throw new Exception("Usuário inválido.");

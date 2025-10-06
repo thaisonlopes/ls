@@ -1,68 +1,58 @@
 package br.com.lopessolutions.acesso.util;
 
-import br.com.lopessolutions.acesso.dao.tipoAcesso.TipoAcessoDAO;
-import br.com.lopessolutions.acesso.dao.usuario.UsuarioDAO;
 import br.com.lopessolutions.entidades.principal.TipoAcesso;
 import br.com.lopessolutions.entidades.principal.Usuario;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-/**
- * 
- * @author Usuário
- *
- */
+@ApplicationScoped
 public class AmbienteDesenvolvimento {
 
-	private static final int TESTE = 0;
-	private static final int PRODUCAO = 1;
-	private static int ambiente = PRODUCAO; // alterar essa variável para PRODUCAO ou TESTE
+    private static final int TESTE = 0;
+    private static final int PRODUCAO = 1;
+    private static int ambiente = PRODUCAO; // alterar essa variável para PRODUCAO ou TESTE
 
-	public static boolean isProducao() {
-		return (ambiente == PRODUCAO);
-	}
+    @PersistenceContext(unitName = "LS")
+    private EntityManager em;
 
-	public static void cadastroInicialParateste(TipoAcessoDAO tipoAcessoDAO, UsuarioDAO usuarioDAO) {
+    public static boolean isProducao() {
+        return (ambiente == PRODUCAO);
+    }
 
-		TipoAcesso ta = tipoAcessoDAO.getPorCodigo(1);
-		if (ta == null) {
-			ta = new TipoAcesso();
-			ta.setCodigo(1);
-			ta.setDescricao("Sem Acesso");
-			tipoAcessoDAO.salvar("Usuário", ta);
-		}
+    public void seedIfFirstAccess() {
+        // Tipos de Acesso
+        ensureTipoAcesso(1, "Sem Acesso");
+        ensureTipoAcesso(2, "Acesso Personalizado");
+        ensureTipoAcesso(20, "Acesso Total");
 
-		ta = tipoAcessoDAO.getPorCodigo(2);
-		if (ta == null) {
-			ta = new TipoAcesso();
-			ta.setCodigo(2);
-			ta.setDescricao("Acesso Personalizado");
-			tipoAcessoDAO.salvar("Usuário", ta);
-		}
+        // Usuário administrador padrão se não houver nenhum usuário
+        Long totalUsuarios = em.createQuery("select count(u) from Usuario u", Long.class).getSingleResult();
+        if (totalUsuarios == 0) {
+            TipoAcesso acessoTotal = em.find(TipoAcesso.class, 20);
 
-		ta = tipoAcessoDAO.getPorCodigo(20);
-		if (ta == null) {
-			ta = new TipoAcesso();
-			ta.setCodigo(20);
-			ta.setDescricao("Acesso Total");
-			ta = tipoAcessoDAO.salvar("Usuário", ta);
-		}
+            Usuario admin = new Usuario();
+            admin.setNome("Administrador");
+            admin.setCpf("00000000000");
+            admin.setSenha("admin123");
+            admin.setEmail("admin@sistema.local");
+            admin.setFornecedorMateria(true);
+            admin.setPublicador(true);
+            admin.setHabilitado(true);
+            admin.setTipoAcesso(acessoTotal);
+            em.persist(admin);
+        }
+    }
 
-		Usuario us = usuarioDAO.getPorCodigo(1);
-		if (us == null) {
+    private void ensureTipoAcesso(int codigo, String descricao) {
+        TipoAcesso ta = em.find(TipoAcesso.class, codigo);
+        if (ta == null) {
+            ta = new TipoAcesso();
+            ta.setCodigo(codigo);
+            ta.setDescricao(descricao);
+            em.persist(ta);
+        }
+    }
 
-			us = new Usuario();
-
-			us.setCodigo(1);
-			us.setNome("Administrador");
-			us.setCpf("00000000000");
-			us.setSenha("alt@2024");
-			us.setEmail("nexus@gmail.com");
-			us.setFornecedorMateria(true);
-			us.setPublicador(true);
-			us.setHabilitado(true);
-			us.setTipoAcesso(ta);
-			usuarioDAO.salvar("Usuário", us);
-
-		}
-
-	}
+    // Nenhuma permissão por formulário é criada aqui; o controle é por TipoAcesso
 }
