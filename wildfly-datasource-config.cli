@@ -1,0 +1,33 @@
+# Script para configurar o DataSource PostgreSQL no Wildfly
+# Execute este script no console do Wildfly ou via CLI
+
+# Conectar ao Wildfly
+connect
+
+# Criar o driver PostgreSQL
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-class-name=org.postgresql.Driver)
+
+# Criar o DataSource LSDS
+/subsystem=datasources/data-source=LSDS:add(
+    jndi-name=java:jboss/datasources/LSDS,
+    driver-name=postgresql,
+    connection-url=jdbc:postgresql://localhost:5432/ls,
+    user-name=postgres,
+    password=08072014,
+    min-pool-size=5,
+    max-pool-size=20,
+    pool-prefill=true,
+    pool-use-strict-min=false,
+    validate-on-match=true,
+    background-validation=false,
+    background-validation-millis=0,
+    blocking-timeout-wait-millis=5000,
+    query-timeout=0,
+    use-ccm=true,
+    statistics-enabled=true
+)
+
+# Salvar a configuração
+:reload
+
+echo "DataSource LSDS configurado com sucesso!"
