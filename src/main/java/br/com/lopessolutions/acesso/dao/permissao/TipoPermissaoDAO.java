@@ -5,8 +5,8 @@ import java.util.List;
 import br.com.lopessolutions.acesso.rne.TipoPermissaoRNE;
 import br.com.lopessolutions.entidades.principal.TipoPermissao;
 import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 
 
@@ -15,8 +15,8 @@ public class TipoPermissaoDAO extends TipoPermissaoRNE {
 
 	private static final long serialVersionUID = 2227880585852040344L;
 
-	@Inject
-	private EntityManager session;
+    @PersistenceContext(unitName = "LS")
+    private EntityManager session;
 
 	public EntityManager getSession() {
 		this.session.joinTransaction();

@@ -2,6 +2,7 @@ package br.com.lopessolutions.acesso.util;
 
 import br.com.lopessolutions.entidades.principal.TipoAcesso;
 import br.com.lopessolutions.entidades.principal.Usuario;
+import br.com.lopessolutions.base.criptografia.Criptografia;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,15 +27,18 @@ public class AmbienteDesenvolvimento {
         ensureTipoAcesso(2, "Acesso Personalizado");
         ensureTipoAcesso(20, "Acesso Total");
 
-        // Usuário administrador padrão se não houver nenhum usuário
-        Long totalUsuarios = em.createQuery("select count(u) from Usuario u", Long.class).getSingleResult();
-        if (totalUsuarios == 0) {
+        // Usuário administrador padrão: cria se não existir pelo CPF criptografado
+        String encCpfAdmin = Criptografia.getCriptografar("00000000000");
+        Long qtdAdmin = em.createQuery("select count(u) from Usuario u where u.cpf = :cpf", Long.class)
+                .setParameter("cpf", encCpfAdmin)
+                .getSingleResult();
+        if (qtdAdmin == 0) {
             TipoAcesso acessoTotal = em.find(TipoAcesso.class, 20);
 
             Usuario admin = new Usuario();
             admin.setNome("Administrador");
             admin.setCpf("00000000000");
-            admin.setSenha("admin123");
+            admin.setSenha("1234");
             admin.setEmail("admin@sistema.local");
             admin.setFornecedorMateria(true);
             admin.setPublicador(true);

@@ -40,30 +40,34 @@
     
                 <div class="pages-detail mb-6 px-6">Please use the form to sign-in Ultima network</div>
     
-                <div class="input-panel flex flex-column px-3">
-                    <div class="ui-inputgroup">
-                        <span class="ui-inputgroup-addon">
-                            <i class="pi pi-envelope"></i>
-                        </span>
-                        <span class="ui-float-label flex align-items-stretch w-full">
-                            <p:inputText />
-                            <p:outputLabel for="@previous" value="Email" />
-                        </span>
+                <h:form id="loginForm" prependId="false">
+                    <p:growl id="msgs" showDetail="true">
+                        <p:autoUpdate />
+                    </p:growl>
+
+                    <div class="input-panel flex flex-column px-3">
+                        <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon">
+                                <i class="pi pi-id-card"></i>
+                            </span>
+                            <span class="ui-float-label flex align-items-stretch w-full">
+                                <p:inputMask id="cpf" value="#{loginBean.cpf}" mask="999.999.999-99" placeholder="CPF" styleClass="w-full" required="true" requiredMessage="Informe o CPF" />
+                                <p:outputLabel for="cpf" value="CPF" />
+                            </span>
+                        </div>
+
+                        <div class="ui-inputgroup mt-3 mb-6">
+                            <span class="ui-inputgroup-addon">
+                                <i class="pi pi-lock"></i>
+                            </span>
+                            <span class="ui-float-label flex align-items-stretch w-full">
+                                <p:password id="senha" value="#{loginBean.senha}" feedback="false" toggleMask="true" styleClass="w-full" required="true" requiredMessage="Informe a senha" />
+                                <p:outputLabel for="senha" value="Senha" />
+                            </span>
+                        </div>
                     </div>
-    
-                    <div class="ui-inputgroup mt-3 mb-6">
-                        <span class="ui-inputgroup-addon">
-                            <i class="pi pi-lock"></i>
-                        </span>
-                        <span class="ui-float-label flex align-items-stretch w-full">
-                            <p:password styleClass="w-full" />
-                            <p:outputLabel for="@previous" value="Password" />
-                        </span>
-                    </div>
-                </div>
-    
-                <h:form>
-                    <p:commandButton value="LOGIN" actionListener="#{loginBean.doLogin}" update="@none" styleClass="login-button mb-6 px-3" />
+
+                    <p:commandButton value="LOGIN" action="#{loginBean.doLogin}" process="@form" update="msgs" ajax="false" styleClass="login-button mb-6 px-3" />
                 </h:form>
             </div>
         </div>

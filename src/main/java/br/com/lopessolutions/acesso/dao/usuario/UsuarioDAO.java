@@ -5,16 +5,16 @@ import java.util.List;
 import br.com.lopessolutions.acesso.rne.UsuarioRNE;
 import br.com.lopessolutions.entidades.principal.Usuario;
 import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Stateless
 public class UsuarioDAO extends UsuarioRNE {
 
 	private static final long serialVersionUID = -3570800836229180404L;
 
-	@Inject
-	private EntityManager session;
+    @PersistenceContext(unitName = "LS")
+    private EntityManager session;
 
 	public EntityManager getSession() {
 		this.session.joinTransaction();
